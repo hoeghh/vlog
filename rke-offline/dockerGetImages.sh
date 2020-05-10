@@ -62,7 +62,7 @@ echo " - Fetching list of images on version $VERSION"  | tee -a output/$VERSION/
 
 while IFS= read -r line; do
     echo "   - Pulling image $line"  | tee -a output/$VERSION/log.txt
-    docker pull $line > /dev/null 2>&1 &
+    docker pull $REGISTRY$line > /dev/null 2>&1 &
     pids+=" $!"
 done <<< "$LIST"
 
@@ -85,7 +85,7 @@ echo "
 
 while IFS= read -r line; do
     FILENAME="output/$VERSION/$(clean $line).tar"
-    echo "   - Saving $line to $FILENAME" | tee -a output/$VERSION/log.txt
+    echo "   - Saving $REGISTRY$line to $FILENAME" | tee -a output/$VERSION/log.txt
     docker save $line > $FILENAME
 done <<< "$LIST"
 
