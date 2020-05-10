@@ -1,5 +1,7 @@
 #!/bin/sh
 
+SECONDS=0
+
 # eg. v1.17.2-rancher1-1
 VERSION=$1
 REGISTRY=""
@@ -91,4 +93,4 @@ echo "
  - Done fetching RKE system images for version $VERSION
 " | tee -a output/$VERSION/log.txt
 echo " - Generated with RKE version "$(rke -v) | tee -a output/$VERSION/log.txt
-
+echo "Elapsed: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
