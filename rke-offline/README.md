@@ -2,6 +2,12 @@
 These two scripts are made to download the images RKE needs to spinn up a Kubernetes cluster, and save those to files.
 Those files can then be transfered to an air gab'd location and used to install Kubernetes without and active internet connection.
 
+First example uses Docker which requires you to have both the Docker cli and Docker Daemon running. It will first do a `docker pull`, and then a `docker save`. This option is faster then the next using Skopeo, but very few automated pipelines have access to a Docker daemon for security reasons. 
+
+Next example doesnt require Docker at all, and is more flexible. It downloads the Docker images directly to disk in one command, but could also fetch them from one repo, and save them in another repository. So it could fetch them from the docker hub, and push to an internal docker registry. Using Skopeo is a bit slower then using Docker, but its much easier to integrate into a CD pipeline.
+
+Both scripts support custom source registry url, if set in the top of the script. Some companies operate behind a firewall, and need to use an proxy repository. 
+
 ## Usage with Docker cli + Docker daemon
 Run ./dockerGetImages.sh [VERSION]
 
