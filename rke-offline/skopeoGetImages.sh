@@ -76,11 +76,27 @@ while IFS= read -r line; do
         --dest-tls-verify=${DEST_TLS_VERIFY} \
         --src-tls-verify=${SOURCE_TLS_VERFIFY} \
         docker://$REGISTRY$line \
-        docker-archive:$FILENAME >> output/$VERSION/log.txt || exit 1
+        docker-archive:$FILENAME >> output/$VERSION/log.txt &
+    pids+=" $!"
 done <<< "$LIST"
 
+echo -e "
+ - Waiting for all images to be done pulling and written to disc \c" | tee -a output/$VERSION/log.txt
+
+for p in $pids; do
+        if wait $p; then
+                echo -e "#\c" | tee -a output/$VERSION/log.txt
+        else
+                echo "- Process $p fail" | tee -a output/$VERSION/log.txt
+                exit 1
+        fi
+done
 echo "
- - Done fetching RKE system images for version $VERSION
+   - All images are pulled and saved.
+"
+
+wait
+echo " - Done fetching RKE system images for version $VERSION
 " | tee -a output/$VERSION/log.txt
 echo " - Generated with RKE version "$(rke -v) | tee -a output/$VERSION/log.txt
-echo "Elapsed: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
+echo " - Elapsed: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec" | tee -a output/$VERSION/log.txt
