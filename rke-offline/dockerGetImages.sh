@@ -92,5 +92,5 @@ done <<< "$LIST"
 echo "
  - Done fetching RKE system images for version $VERSION
 " | tee -a output/$VERSION/log.txt
-echo " - Generated with RKE version "$(rke -v) | tee -a output/$VERSION/log.txt
+echo " - Generated with "$(rke -v) | tee -a output/$VERSION/log.txt
 echo " - Elapsed: $(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec" | tee -a output/$VERSION/log.txt
