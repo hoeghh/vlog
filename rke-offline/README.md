@@ -6,7 +6,7 @@ First example uses Docker which requires you to have both the Docker cli and Doc
 
 Next example doesnt require Docker at all, and is more flexible. It downloads the Docker images directly to disk in one command, but could also fetch them from one repo, and save them in another repository. So it could fetch them from the docker hub, and push to an internal docker registry. Its much easier to integrate into a CD pipeline.
 
-Both scripts support custom source registry url, if set in the top of the script. Some companies operate behind a firewall, and need to use an proxy repository. Both scripts downloads all images in parallel to speed up the process. 
+Both scripts support custom source registry url, if set in the top of the script. Some companies operate behind a firewall, and need to use an proxy repository. The Docker scripts downloads all images in parallel to speed up the process. The Skopeo script can do that, but it tends to break so i disabled it again. I dont know why it does, but it does it own parallel thing in the background so it might be hammering the Docker hub to much if we started all of them in parallel. 
 
 ## Usage with Docker cli + Docker daemon
 Run ./dockerGetImages.sh [VERSION]
